@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { LanguageProvider } from "@/components/LanguageProvider";
 import { Header } from "@/components/Header";
 import { site } from "@/data/site";
 import "./globals.css";
@@ -18,11 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen font-sans">
-        <div className="site-shell flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-        </div>
+      <body className="min-h-screen bg-page font-sans text-ink">
+        <LanguageProvider>
+          <div className="site-shell flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1">{children}</main>
+          </div>
+        </LanguageProvider>
       </body>
     </html>
   );

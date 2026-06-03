@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import type { Project } from "@/data/projects";
+import { getProjectCopy } from "@/data/i18n";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type ProjectNavProps = {
   projects: Project[];
@@ -15,13 +17,15 @@ const linkClass = (active: boolean) =>
   ].join(" ");
 
 export function ProjectNav({ projects, currentSlug }: ProjectNavProps) {
+  const { locale, t } = useLanguage();
+
   return (
     <nav
       className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-4 text-sm md:text-base"
-      aria-label="Projects"
+      aria-label={t.nav.projects}
     >
       <Link href="/" className={linkClass(false)} scroll={false}>
-        All
+        {t.project.all}
       </Link>
       {projects.map((project) => (
         <Link
@@ -31,7 +35,7 @@ export function ProjectNav({ projects, currentSlug }: ProjectNavProps) {
           aria-current={project.slug === currentSlug ? "page" : undefined}
           scroll={false}
         >
-          {project.title}
+          {getProjectCopy(locale, project.slug).title}
         </Link>
       ))}
     </nav>

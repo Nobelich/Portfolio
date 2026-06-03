@@ -3,7 +3,10 @@
 import Image from "next/image";
 import type { Project } from "@/data/projects";
 import { isProjectReady } from "@/data/projects";
+import { getProjectCopy } from "@/data/i18n";
+import { ProjectLivePreview } from "@/components/ProjectLivePreview";
 import { ProjectNav } from "@/components/ProjectNav";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type ProjectDetailProps = {
   project: Project;
@@ -11,6 +14,8 @@ type ProjectDetailProps = {
 };
 
 export function ProjectDetail({ project, projects }: ProjectDetailProps) {
+  const { locale, t } = useLanguage();
+  const copy = getProjectCopy(locale, project.slug);
   const ready = isProjectReady(project);
 
   return (
@@ -20,19 +25,18 @@ export function ProjectDetail({ project, projects }: ProjectDetailProps) {
           href={project.liveUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="relative block aspect-video w-full overflow-hidden bg-stone-200 transition-opacity hover:opacity-95"
+          className="relative block aspect-video w-full overflow-hidden bg-surface transition-opacity hover:opacity-95"
           style={{ backgroundColor: project.bgColor }}
-          aria-label={`Open ${project.title} live site`}
+          aria-label={t.project.openLiveSiteAria(copy.title)}
         >
-          <iframe
-            src={project.liveUrl}
-            title={`Preview of ${project.title}`}
-            className="pointer-events-none absolute inset-0 h-full w-full border-0"
+          <ProjectLivePreview
+            url={project.liveUrl}
+            title={t.project.previewOf(copy.title)}
           />
         </a>
       ) : (
         <div
-          className="relative aspect-video w-full overflow-hidden bg-stone-200"
+          className="relative aspect-video w-full overflow-hidden bg-surface"
           style={{ backgroundColor: project.bgColor }}
         >
           <Image
@@ -50,11 +54,11 @@ export function ProjectDetail({ project, projects }: ProjectDetailProps) {
       <div className="space-y-6 text-sm md:text-base">
         <div className="space-y-4">
           <h2 className="text-base font-bold tracking-tight text-ink md:text-lg">
-            {project.title}
+            {copy.title}
           </h2>
 
           <div className="max-w-2xl space-y-4">
-            {project.description.map((paragraph, index) => (
+            {copy.description.map((paragraph, index) => (
               <p
                 key={`${project.slug}-${index}`}
                 className="leading-relaxed text-ink"
@@ -65,15 +69,6 @@ export function ProjectDetail({ project, projects }: ProjectDetailProps) {
           </div>
         </div>
 
-        {ready ? (
-          <p className="text-muted">
-            Click the preview to open the live site. If the embed is blank, the
-            site may block embedding.
-          </p>
-        ) : null}
-
-        <ProjectNav projects={projects} currentSlug={project.slug} />
-
         {ready || project.repoUrl ? (
           <div className="flex flex-wrap gap-3">
             {ready ? (
@@ -81,9 +76,9 @@ export function ProjectDetail({ project, projects }: ProjectDetailProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border border-stone-300 bg-ink px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-stone-800"
+                className="inline-block border border-border bg-ink px-5 py-2.5 text-base font-medium text-page transition-colors hover:bg-muted hover:text-page"
               >
-                Open live site
+                {t.project.openLiveSite}
               </a>
             ) : null}
             {project.repoUrl ? (
@@ -91,13 +86,15 @@ export function ProjectDetail({ project, projects }: ProjectDetailProps) {
                 href={project.repoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block border border-stone-300 px-5 py-2.5 text-base font-medium text-ink transition-colors hover:bg-stone-100"
+                className="inline-block border border-border px-5 py-2.5 text-base font-medium text-ink transition-colors hover:bg-surface"
               >
-                View on GitHub
+                {t.project.viewOnGitHub}
               </a>
             ) : null}
           </div>
         ) : null}
+
+        <ProjectNav projects={projects} currentSlug={project.slug} />
       </div>
     </div>
   );
