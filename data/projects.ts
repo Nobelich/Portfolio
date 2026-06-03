@@ -12,15 +12,15 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: "monday-site",
-    title: "Project title (Monday)",
+    title: "Legendary Cars",
     description: [
-      "Write one or two sentences about what you built in this project — the goal, the main features, and who it is for when someone visits your site.",
-      "Write one or two sentences about what you learned in the Monday session — a tool, a technique, or something that surprised you while you were building.",
+      "A car rental landing page built with HTML, CSS, and JavaScript — visitors browse featured vehicles and submit a booking form to reserve a drive.",
+      "Built during the Monday session and deployed live on GitHub Pages. First time shipping a site end-to-end: structure, styling, and publishing.",
     ],
-    liveUrl: "",
-    repoUrl: "",
+    liveUrl: "https://nobelich.github.io/cars/",
+    repoUrl: "https://github.com/Nobelich/cars",
     thumbnail: "/placeholder.svg",
-    bgColor: "#948c80",
+    bgColor: "#212121",
     session: "Monday",
   },
   {

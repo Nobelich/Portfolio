@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: site.name,
     template: `%s — ${site.name}`,
   },
-  description: "CodeMoldova portfolio — projects and work.",
+  description: "Artemiy Liubynskii — portfolio and selected work.",
 };
 
 export default function RootLayout({
